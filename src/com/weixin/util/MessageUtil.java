@@ -13,6 +13,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.thoughtworks.xstream.XStream;
+import com.weixin.po.TextMessage;
+
 public class MessageUtil {
 	
 	//xml转为集合
@@ -29,8 +32,10 @@ public class MessageUtil {
 		ins.close();
 		return map;
 	}
-	public static String textMessageToXml(TextMeassage textMessage){
+	
+	//将文本消息，转换为xml
+	public static String textMessageToXml(TextMessage textMessage){
 		XStream xstream=new XStream();
-		xstrea
+		return xstream.toXML(textMessage);
 	}
 }
