@@ -36,6 +36,7 @@ public class MessageUtil {
 	//将文本消息，转换为xml
 	public static String textMessageToXml(TextMessage textMessage){
 		XStream xstream=new XStream();
+		xstream.alias("xml", textMessage.getClass());
 		return xstream.toXML(textMessage);
 	}
 }

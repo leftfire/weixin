@@ -20,45 +20,54 @@ public class WeixinServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String signature=req.getParameter("signature");
-		String timestamp=req.getParameter("timestamp");
-		String nonce=req.getParameter("nonce");
-		String echostr=req.getParameter("echostr");
-	PrintWriter out=resp.getWriter();	
-	if(CheckUtil.checkSignature(signature, timestamp, nonce)){
-		out.print(echostr.toString());
+		String signature = req.getParameter("signature");
+		String timestamp = req.getParameter("timestamp");
+		String nonce = req.getParameter("nonce");
+		String echostr = req.getParameter("echostr");
+		PrintWriter out = resp.getWriter();
+		if (CheckUtil.checkSignature(signature, timestamp, nonce)) {
+			out.print(echostr.toString());
+		}
 	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+		PrintWriter out = resp.getWriter();
+		// TODO 自动生成的方法存根
+		try {
+			Map<String, String> map = MessageUtil.xmlToMap(req);
+			String fromUserName = map.get("FromUserName");
+			String toUserName = map.get("ToUserName");
+			String msgType = map.get("MsgType");
+			String content = map.get("Content");
+			String message = null;
+			
+			TextMessage text = new TextMessage();
+			text.setFromUserName(toUserName);
+			text.setToUserName(fromUserName);
+			text.setMsgType("text");
+			text.setCreateTime(new Date().getTime());
+			
+			
+			if ("text".equals(msgType)) {
+				
+				text.setContent("您发送的微信内容是：" + content);
+				message = MessageUtil.textMessageToXml(text);
+			}else{
+				text.setContent("您发送的是非文字类消息");
+				message = MessageUtil.textMessageToXml(text);
+			}
+			out.print(message);
+		} catch (DocumentException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} finally {
+
+			out.close();
+		}
+
 	}
-//	@Override
-//	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-//			throws ServletException, IOException {
-//	PrintWriter out=resp.getWriter();
-//		// TODO 自动生成的方法存根
-//		try {
-//			Map<String,String> map=MessageUtil.xmlToMap(req);
-//			String fromUserName=map.get("FromUserName");
-//			String toUserName=map.get("ToUserName");
-//			String msgType=map.get("MsgType");
-//			String content=map.get("Content");
-//			String message=null;
-//			if ("text".equals(msgType)){
-//				TextMessage text=new TextMessage();
-//				text.setFromUserName(toUserName);
-//				text.setToUserName(fromUserName);
-//				text.setMsgType("text");
-//				text.setCreateTime(new Date().getTime());
-//				text.setContent("您发送的微信内容是："+content);
-//				message=MessageUtil.textMessageToXml(text);
-//				System.out.print(message);
-//				
-//			}
-//			out.print(message);
-//		} catch (DocumentException e) {
-//			// TODO 自动生成的 catch 块
-//			e.printStackTrace();
-//		}finally{
-//			out.close();
-//		}
-//		
-//	}
 }
