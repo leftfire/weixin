@@ -102,7 +102,7 @@ public class MessageUtil {
 		sb.append("你点击了详细子功能介绍  按钮");
 		return sb.toString();
 	}
-	//返回access_token expires_in
+	//返回AccessToken实体对象
 	public static  AccessToken gettokenandexp(){
 		AccessToken atk= new AccessToken();
 		JSONObject jsonObj=WeixinUtil.httpRequest(MESSAGE_GET_TOKEN_URL, "GET",null);
