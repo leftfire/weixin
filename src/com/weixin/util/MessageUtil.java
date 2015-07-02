@@ -15,8 +15,11 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.thoughtworks.xstream.XStream;
+import com.weixin.access_token.AccessToken;
 import com.weixin.access_token.WeixinUtil;
 import com.weixin.po.TextMessage;
+
+import net.sf.json.JSONObject;
 
 
 /**
@@ -100,7 +103,13 @@ public class MessageUtil {
 		return sb.toString();
 	}
 	//·µ»Øaccess_token expires_in
-	
+	public static  AccessToken gettokenandexp(){
+		AccessToken atk= new AccessToken();
+		JSONObject jsonObj=WeixinUtil.httpRequest(MESSAGE_GET_TOKEN_URL, "GET",null);
+		atk.setToken(jsonObj.getString("access_token"));
+		atk.setExpiresIn(jsonObj.getString("expires_in"));
+		return atk;
+	}
 
 	
 }

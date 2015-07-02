@@ -10,8 +10,7 @@ import java.io.OutputStream;
 
 import java.net.ConnectException;  
 
-import java.net.URL;  
-
+import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;  
 
 import javax.net.ssl.SSLContext;  
@@ -40,7 +39,7 @@ private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);
 
      * @param requestUrl 请求地址
 
-     * @param requestMethod 请求方式（GET、POST）
+     * @param requestMethod 请求方式（GET、POST）必须大写！！！
 
      * @param outputStr 提交的数据
 
@@ -53,11 +52,12 @@ public static JSONObject httpRequest(String requestUrl, String requestMethod, St
         JSONObject jsonObject = null;  
 
         StringBuffer buffer = new StringBuffer();  
-
+       
+        
 try {  
 
 // 创建SSLContext对象，并使用我们指定的信任管理器初始化
-
+	
             TrustManager[] tm = { new MyX509TrustManager() };  
 
             SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");  
@@ -79,14 +79,16 @@ try {
             httpUrlConn.setDoInput(true);  
 
             httpUrlConn.setUseCaches(false);  
-
+            
 // 设置请求方式（GET/POST）
-
+            requestMethod=requestMethod.toUpperCase();
             httpUrlConn.setRequestMethod(requestMethod);  
+           
 
-if ("GET".equalsIgnoreCase(requestMethod))  
-
+if ("GET".equals(requestMethod))  {
+	
                 httpUrlConn.connect();  
+}
 
 // 当有数据需要提交时
 
@@ -113,9 +115,7 @@ if (null != outputStr) {
             String str = null;  
 
 while ((str = bufferedReader.readLine()) != null) {  
-
-                buffer.append(str);  
-
+                buffer.append(str);              
             }  
 
             bufferedReader.close();  

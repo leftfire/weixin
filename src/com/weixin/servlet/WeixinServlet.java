@@ -45,6 +45,8 @@ public class WeixinServlet extends HttpServlet {
 
 			if (MessageUtil.MESSAGE_TEXT.equals(msgType)) {
 				if("3".equals(content)){
+					System.out.println(MessageUtil.gettokenandexp().getToken());
+					
 					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.firstMenu());
 				}else if("2".equals(content)){
 					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.secondMenu());
