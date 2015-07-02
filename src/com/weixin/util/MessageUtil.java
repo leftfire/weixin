@@ -15,6 +15,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.thoughtworks.xstream.XStream;
+import com.weixin.access_token.WeixinUtil;
 import com.weixin.po.TextMessage;
 
 
@@ -39,7 +40,9 @@ public class MessageUtil {
 	public static final String MESSAGE_UNSUBSCRIBE = "unsubscribe";
 	public static final String MESSAGE_CLICK = "CLICK";
 	public static final String MESSAGE_VIEW = "VIEW";
-
+	
+	
+	public static String MESSAGE_GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb06c74685b90aee7&secret=3d65e2d676224b8a74be005714cd247f";
 	// xml转为集合
 	public static Map<String, String> xmlToMap(HttpServletRequest request) throws IOException, DocumentException {
 		Map<String, String> map = new HashMap<String, String>();
@@ -96,4 +99,8 @@ public class MessageUtil {
 		sb.append("你点击了详细子功能介绍  按钮");
 		return sb.toString();
 	}
+	//返回access_token expires_in
+	
+
+	
 }

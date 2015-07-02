@@ -2,7 +2,6 @@ package com.weixin.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.DocumentException;
 
-import com.weixin.po.TextMessage;
 import com.weixin.util.CheckUtil;
 import com.weixin.util.MessageUtil;
 
@@ -46,7 +44,7 @@ public class WeixinServlet extends HttpServlet {
 			String message = null;
 
 			if (MessageUtil.MESSAGE_TEXT.equals(msgType)) {
-				if("1".equals(content)){
+				if("3".equals(content)){
 					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.firstMenu());
 				}else if("2".equals(content)){
 					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.secondMenu());
