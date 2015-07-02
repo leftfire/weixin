@@ -44,21 +44,23 @@ public class WeixinServlet extends HttpServlet {
 			String msgType = map.get("MsgType");
 			String content = map.get("Content");
 			String message = null;
-			
-			TextMessage text = new TextMessage();
-			text.setFromUserName(toUserName);
-			text.setToUserName(fromUserName);
-			text.setMsgType("text");
-			text.setCreateTime(new Date().getTime());
-			
-			
-			if ("text".equals(msgType)) {
+
+			if (MessageUtil.MESSAGE_TEXT.equals(msgType)) {
+				if("1".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.firstMenu());
+				}else if("2".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.secondMenu());
+				}else if("?".equals(content)||"？".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+				}
 				
-				text.setContent("您发送的微信内容是：" + content);
-				message = MessageUtil.textMessageToXml(text);
-			}else{
-				text.setContent("您发送的是非文字类消息");
-				message = MessageUtil.textMessageToXml(text);
+			}else if(MessageUtil.MESSAGE_EVENT.equals(msgType)){
+				String eventType=map.get("Event");
+				if(MessageUtil.MESSAGE_SUBSCRIBE.equals(eventType)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+					
+				}
+				
 			}
 			out.print(message);
 		} catch (DocumentException e) {
