@@ -40,6 +40,8 @@ public class CoreService {
                 respContent = "您发送的是文本消息！"+"内容为:"+requestMap.get("Content"); 
                 if("1".equals(requestMap.get("Content"))){
                 	MenuManager.DoCreateMenu();
+                }else{
+                	MessageUtil.GetUserList();
                 }
             } 
             // 图片消息 
