@@ -1,6 +1,7 @@
 package com.weixin.service;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,10 @@ public class CoreService {
         try { 
             // 默认返回的文本消息内容 
             String respContent = "请求处理异常，请稍候尝试！"; 
- 
+
             // xml请求解析 
             Map<String, String> requestMap = MessageUtil.xmlToMap(request); 
- 
+
             // 发送方帐号（open_id） 
             String fromUserName = requestMap.get("FromUserName"); 
             // 公众帐号 
@@ -55,7 +56,7 @@ public class CoreService {
             } 
             // 音频消息 
             else if (msgType.equals(MessageUtil.MESSAGE_VOICE)) { 
-                respContent = "您发送的是音频消息！"; 
+                respContent =requestMap.get("Recognition"); 
             } 
             // 事件推送 
             else if (msgType.equals(MessageUtil.MESSAGE_EVENT)) { 

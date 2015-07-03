@@ -35,7 +35,7 @@ public class MessageUtil {
 	 */
 	public static final String MESSAGE_TEXT = "text";
 	public static final String MESSAGE_IMAGE = "image";
-	public static final String MESSAGE_VOICE = "vocie";
+	public static final String MESSAGE_VOICE = "voice";
 	public static final String MESSAGE_VIDEO = "video";
 	public static final String MESSAGE_LINK = "link";
 	public static final String MESSAGE_LOCATION = "location";
@@ -60,6 +60,7 @@ public class MessageUtil {
 		Element root = doc.getRootElement();
 		List<Element> list = root.elements();
 		for (Element e : list) {
+			//System.out.println(e.getName()+ e.getText());
 			map.put(e.getName(), e.getText());
 		}
 		ins.close();
