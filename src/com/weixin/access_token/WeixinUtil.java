@@ -21,15 +21,12 @@ import javax.net.ssl.TrustManager;
 
 import net.sf.json.JSONObject;  
 
-import org.slf4j.Logger;  
-
-import org.slf4j.LoggerFactory;
 
 
 
 public class WeixinUtil {  
 
-private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);  
+//private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);  
 
 /**
 
@@ -134,11 +131,11 @@ while ((str = bufferedReader.readLine()) != null) {
 
         } catch (ConnectException ce) {  
 
-            log.error("Weixin server connection timed out.");  
+           // log.error("Weixin server connection timed out.");  
 
         } catch (Exception e) {  
 
-            log.error("https request error:{}", e);  
+           // log.error("https request error:{}", e);  
 
         }  
 

@@ -9,6 +9,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -18,8 +21,6 @@ import com.thoughtworks.xstream.XStream;
 import com.weixin.access_token.AccessToken;
 import com.weixin.access_token.WeixinUtil;
 import com.weixin.po.TextMessage;
-
-import net.sf.json.JSONObject;
 
 
 /**
@@ -34,7 +35,7 @@ public class MessageUtil {
 	 */
 	public static final String MESSAGE_TEXT = "text";
 	public static final String MESSAGE_IMAGE = "image";
-	public static final String MESSAGE_VOCIE = "vocie";
+	public static final String MESSAGE_VOICE = "vocie";
 	public static final String MESSAGE_VIDEO = "video";
 	public static final String MESSAGE_LINK = "link";
 	public static final String MESSAGE_LOCATION = "location";
@@ -44,8 +45,12 @@ public class MessageUtil {
 	public static final String MESSAGE_CLICK = "CLICK";
 	public static final String MESSAGE_VIEW = "VIEW";
 	
+	public static final String appID="wxb06c74685b90aee7";
+	public static final String appsecret="3d65e2d676224b8a74be005714cd247f";
 	
-	public static String MESSAGE_GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb06c74685b90aee7&secret=3d65e2d676224b8a74be005714cd247f";
+	public static String MESSAGE_GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	
+	public static String Menu_CREATE_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 	// xml转为集合
 	public static Map<String, String> xmlToMap(HttpServletRequest request) throws IOException, DocumentException {
 		Map<String, String> map = new HashMap<String, String>();
@@ -103,13 +108,47 @@ public class MessageUtil {
 		return sb.toString();
 	}
 	//返回AccessToken实体对象
-	public static  AccessToken gettokenandexp(){
-		AccessToken atk= new AccessToken();
-		JSONObject jsonObj=WeixinUtil.httpRequest(MESSAGE_GET_TOKEN_URL, "GET",null);
-		atk.setToken(jsonObj.getString("access_token"));
-		atk.setExpiresIn(jsonObj.getString("expires_in"));
-		return atk;
+	public static  AccessToken getAccessToken(){
+		//AccessToken getAccessToken=null;
+		String requestUrl=MESSAGE_GET_TOKEN_URL.replace("APPID", appID).replace("APPSECRET", appsecret);
+		JSONObject jsonObj=WeixinUtil.httpRequest(requestUrl, "GET",null);
+		AccessToken accessToken = new AccessToken();
+		if(null !=jsonObj){
+			try {
+				
+				accessToken.setToken(jsonObj.getString("access_token"));
+				accessToken.setExpiresIn(jsonObj.getString("expires_in"));
+			} catch (JSONException e) {
+				
+				accessToken=null;
+				// TODO: handle exception
+			} 
+            
+		}
+		return accessToken;
 	}
 
+	//创建菜单
+	public static int createMenu(Menu menu, String accessToken) { 
+	    int result = 0; 
+	 
+	    // 拼装创建菜单的url 
+	    String url = Menu_CREATE_URL.replace("ACCESS_TOKEN", accessToken);
+	    
+	    // 将菜单对象转换成json字符串 
+	    String jsonMenu = JSONObject.fromObject(menu).toString(); 
+	    // 调用接口创建菜单 
+	    JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", jsonMenu); 
+	 
+	    if (null != jsonObject) { 
+	        if (0 != jsonObject.getInt("errcode")) { 
+	            result = jsonObject.getInt("errcode"); 
+	        } 
+	    } 
+	 
+	    return result; 
+	} 
+	
+	
 	
 }
