@@ -2,6 +2,7 @@ package com.weixin.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
@@ -48,7 +50,7 @@ public class MessageUtil {
 	public static final String appID="wxb06c74685b90aee7";
 	public static final String appsecret="3d65e2d676224b8a74be005714cd247f";
 	
-	public static String GET_OPENID="https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID";
+	public static String GET_OPENID="https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=";
 	public static String MESSAGE_GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	
 	public static String Menu_CREATE_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
@@ -155,11 +157,21 @@ public class MessageUtil {
 	public static UserList GetUserList(){
 		UserList ul=new UserList();
 		String url=GET_OPENID.replace("ACCESS_TOKEN", getAccessToken().getToken());
+		//System.out.println(url);
 		JSONObject jsonObj=WeixinUtil.httpRequest(url, "GET",null);
 		if( null !=jsonObj){
-			
 			System.out.println(jsonObj.getString("total"));
+			ul.setTotal(jsonObj.getString("total"));
+			
+			JSONObject js=(JSONObject) jsonObj.get("data");
+			JSONArray ja=js.getJSONArray("openid");
+			ArrayList<String> al=new ArrayList<String>();
+			for(int i=0;i<ja.size();i++){
+				ja.getString(i);
+			}
+			ul.setOpen_id(al);
 		}
+		//返回用户列表对象。包含 总数total，所有用户的  openid
 		return ul;
 	}
 	

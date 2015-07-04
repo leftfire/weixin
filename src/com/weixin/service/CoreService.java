@@ -42,6 +42,7 @@ public class CoreService {
                 	MenuManager.DoCreateMenu();
                 }else{
                 	MessageUtil.GetUserList();
+                	System.out.println("用户数据获取成功");
                 }
             } 
             // 图片消息 
